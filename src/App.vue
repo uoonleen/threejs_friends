@@ -13,7 +13,8 @@ export default {
     return {
       camera: '',
       scene: '',
-      renderer: ''
+      renderer: '',
+      cube: ''
     }
   },
   created() {
@@ -22,15 +23,28 @@ export default {
     this.renderer = new Three.WebGLRenderer();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
 
-    let app = document.getElementById('app');
-    app.appendChild(this.renderer.domElement);
+    document.body.appendChild(this.renderer.domElement);
+
+    // create the shape
+    let geometry = new Three.BoxGeometry(1, 1, 1);
+
+    // create a material, color or image texture
+    let material = new Three.MeshBasicMaterial({ color: 0xFFFFFF, wireframe: false });
+    this.cube = new Three.Mesh(geometry, material);
+    
+    this.scene.add(this.cube);
+
+
+
+    this.camera.position.z = 3;
 
     this.gameLoop(); 
   },
   methods: {
     // game logic
     update() {
-
+      this.cube.rotation.x += 0.01;
+      this.cube.rotation.y += 0.005;
     },
 
     // draw scene
